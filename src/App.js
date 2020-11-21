@@ -1,25 +1,29 @@
-import logo from './logo.svg';
 import './App.css';
+import { Suspense } from 'react'
+import { fetchData } from './providers/API'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+const resource = fetchData()
+
+const App = () => (
+    <div className="container">
+      <Suspense fallback={<h1>loading users . . .</h1>}>
+        <UserDetails />
+      </Suspense>
     </div>
-  );
+)
+
+const UserDetails = () => {
+  const user = resource.user.read();
+  return (
+    <div>
+      <h1>{user.name}</h1>
+      <ul>
+        <li>{user.name}</li>
+        <li>{user.email}</li>
+        <li>{user.address.city}</li>
+      </ul>
+    </div>
+  )
 }
 
 export default App;
