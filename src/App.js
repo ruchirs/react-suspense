@@ -6,8 +6,9 @@ const resource = fetchData()
 
 const App = () => (
     <div className="container my-5">
-      <Suspense fallback={<h1>loading users . . .</h1>}>
+      <Suspense fallback={<h1>loading . . .</h1>}>
         <UserDetails />
+        <UserPosts />
       </Suspense>
     </div>
 )
@@ -23,6 +24,22 @@ const UserDetails = () => {
         <li>City: {user.address.city}</li>
       </ul>
     </div>
+  )
+}
+
+const UserPosts = () => {
+  const posts = resource.posts.read();
+  return (
+    <ul className='list-group'>
+      <li className='list-group-item'>
+        <b>User's Posts</b>
+      </li>
+      {posts.map(post => (
+        <li className='list-group-item' key={post.id}>
+          {post.title}
+        </li>
+      ))}
+    </ul>
   )
 }
 

@@ -2,8 +2,10 @@ import axios from 'axios'
 
 export const fetchData = () => {
     const userPromise = fetchUser();
+    const postsPromise = userPosts();
     return {
-        user: wrapPromise(userPromise)
+        user: wrapPromise(userPromise),
+        posts: wrapPromise(postsPromise)
     }
 }
 
@@ -43,9 +45,15 @@ const wrapPromise = (promise) => {
 }
 
 const fetchUser = () => {
-    console.log('fetching users')
     return axios
-        .get ('https://jsonplaceholder.typicode.com/users/2')
+        .get('https://jsonplaceholder.typicode.com/users/2')
+        .then(res => res.data)
+        .catch(err => console.log('err', err))
+}
+
+const userPosts = () => {
+    return axios
+        .get('https://jsonplaceholder.typicode.com/posts?_limit=5')
         .then(res => res.data)
         .catch(err => console.log('err', err))
 }
